@@ -1,21 +1,24 @@
 const express = require("express");
 const connectDB = require("./config");
-const Blog = require("./blogSchema");
-
+const blogRoute = require("./routes/blogRoute");
+const PORT = 5000;
 const app = express();
+//const Blog = require("./models/blogSchema");
+//const { default: mongoose } = require("mongoose");
+
+//Middleware to parse incoming json request body
 app.use(express.json());
 
+//Connect to MongoDB using Mongoose
 connectDB();
 
-app.post("/api/blogs", async (req, res) => {
-    try {
-        const blog = await Blog.create(req.body);
-        res.json(blog);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
+//User the user routes
+app.use("/api",blogRoute);
 
-app.listen(5000, () => {
-    console.log("Server running on port 5000");
+
+
+
+// Starting the server
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
