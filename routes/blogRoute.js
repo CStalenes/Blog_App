@@ -77,6 +77,26 @@ router.put("/update-blog/:id", async (req, res) =>{
 
 });
 
+router.delete("/delete-blog/:id", async (req, res)=>{
+    try{
+        const blogDeleted = await Blog.findByIdAndDelete(req.params.id);
+        if(!blogDeleted) {
+            return res.status(404).json({
+                message : "Blog not found",
+            });
+        }
+        res.status(200).json({
+            message : "Blog successfully deleted",
+            blogDeleted,
+        });
+    } catch(err){
+        res.status(500).json({
+            message : "Blog not found",
+            err,
+        });
+    }
+});
+
 //dump clef valeur pour transformer les dico en json
 
 module.exports = router;
