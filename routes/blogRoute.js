@@ -25,6 +25,25 @@ router.get("/my-blogs", async (req, res) => {
     }
 });
 
+router.get("/my-blogs/:id", async (req, res) => {
+    try{
+        const myBlogId = await Blog.findById(req.params.id);
+        if(!myBlogId){
+            return res.status(400).json({
+                 message: "Blog not found",
+            });
+        }
+        res.status(200).json({
+            myBlogId,
+        });
+    } catch(err){
+        res.status(500).json({
+            message: "Error fetching blogs",
+            err,
+        });
+    }
+});
+
 //dump clef valeur pour transformer les dico en json
 
 module.exports = router;
